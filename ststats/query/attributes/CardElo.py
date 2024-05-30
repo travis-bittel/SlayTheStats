@@ -1,9 +1,9 @@
-from sample.attributes.Attribute import Attribute
-from sample.filters.FloorFilter import FloorFilter
-from sample.filters.RunFilter import RunFilter
-from sample.run_data.CardChoice import CardChoice
-import sample.run_data.card_choices as card_choices
-import sample.run_data.floors as floors
+from ststats.query.attributes.Attribute import Attribute
+from ststats.query.filters.FloorFilter import FloorFilter
+from ststats.query.filters.RunFilter import RunFilter
+from ststats.query.run_data.CardChoice import CardChoice
+import ststats.query.run_data.card_choices as card_choices
+import ststats.query.run_data.floors as floors
 
 
 class CardElo(Attribute):

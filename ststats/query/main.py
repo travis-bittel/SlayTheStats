@@ -1,7 +1,7 @@
 import os
-import runs.run_data_collectors
-from sample.attributes.CardElo import CardElo
+from ststats.query.attributes.CardElo import CardElo
 from filters.HasRelic import HasRelic
+import runs.run_data_collectors
 
 root_runs_folder = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/runs"
 

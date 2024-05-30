@@ -1,6 +1,6 @@
-from sample.filters.FloorFilter import FloorFilter
-from sample.filters.RunFilter import RunFilter
-import sample.run_data.relics as relics
+from ststats.query.filters.FloorFilter import FloorFilter
+from ststats.query.filters.RunFilter import RunFilter
+import ststats.query.run_data.relics as relics
 
 class HasRelic(RunFilter, FloorFilter):
     def __init__(self, relic_name):

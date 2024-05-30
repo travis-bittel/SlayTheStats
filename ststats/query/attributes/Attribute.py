@@ -1,5 +1,5 @@
-from sample.filters.FloorFilter import FloorFilter
-from sample.filters.RunFilter import RunFilter
+from ststats.query.filters.FloorFilter import FloorFilter
+from ststats.query.filters.RunFilter import RunFilter
 
 
 class Attribute:

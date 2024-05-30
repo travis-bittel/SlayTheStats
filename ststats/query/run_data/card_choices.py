@@ -1,5 +1,5 @@
-import sample.run_data.relics as relics
-from sample.run_data.CardChoice import CardChoice
+import ststats.query.run_data.relics as relics
+from ststats.query.run_data.CardChoice import CardChoice
 
 
 def get_card_choices_for_run(run_json: dict, floors: [int] = None):

@@ -24,5 +24,3 @@ class Run(models.Model):
 
     def __str__(self):
         return str(self.upload_date)
-
-

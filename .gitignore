@@ -163,4 +163,8 @@ cython_debug/
 
 # PostgreSQL connection settings
 .pg_service.conf
+
 .pgpass
+
+node_modules/
+

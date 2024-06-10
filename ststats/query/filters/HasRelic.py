@@ -2,9 +2,10 @@ from ststats.query.filters.FloorFilter import FloorFilter
 from ststats.query.filters.RunFilter import RunFilter
 import ststats.query.run_data.relics as relics
 
+
 class HasRelic(RunFilter, FloorFilter):
-    def __init__(self, relic_name):
-        self.relic_name = relic_name
+    def __init__(self, arguments: dict):
+        self.relic_name = arguments['relic_name']
 
     def matching_floors(self, floors: [int], run_data: dict) -> [int]:
         relics_in_run = relics.all_relics(run_data)
@@ -18,4 +19,3 @@ class HasRelic(RunFilter, FloorFilter):
 
     def matching_runs(self, runs: [dict]) -> [dict]:
         return [run for run in runs if self.relic_name in [relic.name for relic in relics.all_relics(run)]]
-

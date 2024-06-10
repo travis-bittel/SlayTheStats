@@ -1,0 +1,23 @@
+{
+  "attribute": "CardEloRatings",
+  "player_ids":
+  [
+    1
+  ],
+  "characters": [
+    "IRONCLAD"
+  ],
+  "run_filters":
+  [
+    {
+      "name": "HasRelic",
+      "arguments":
+      {
+        "relic_name": "PureWater"
+      }
+    }
+  ],
+  "floor_filters":
+  [
+  ]
+}

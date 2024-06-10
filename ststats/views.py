@@ -1,27 +1,46 @@
 import datetime
 import json
+from json import JSONDecodeError
 
-from django.core import serializers
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.shortcuts import render
 from rest_framework.decorators import api_view
-import os
 
-import ststats.query.runs.run_data_collectors as run_data_collectors
+from ststats.query.query import ATTRIBUTES, CHARACTERS, FILTERS, query_from_json, InvalidQueryException
 from ststats.models import Run, Player
-from ststats.query.attributes.CardElo import CardElo
-from ststats.query.filters.HasRelic import HasRelic
 
 
 def query(request):
-    root_runs_folder = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/runs"
-    runs_in_local_folder = run_data_collectors.all_runs_in_folder(os.path.join(root_runs_folder, "IRONCLAD"))
-    attribute = CardElo()
+    return render(request, "query.html")
 
-    data = attribute.get(runs_in_local_folder, run_filters=[HasRelic('Burning Blood')])
-    for key, value in sorted(((round(v), k) for k, v in data.items()), reverse=True):
-        print([key, value])
 
-    return HttpResponse(f"{data}")
+def query_attributes(request):
+    return JsonResponse({'attributes': list(ATTRIBUTES.keys())})
+
+
+def query_characters(request):
+    return JsonResponse({'characters': CHARACTERS})
+
+
+def query_filters(request):
+    return JsonResponse({'filters': FILTERS})
+
+
+def execute_query(request):
+    try:
+        data = json.load(request)
+    except JSONDecodeError:
+        # TODO: Pull this out to a function and figure out how we want to display errors in general
+        return HttpResponseBadRequest('<h1>400 BAD REQUEST</h1>Query request is not valid JSON')
+
+    try:
+        query_to_run = query_from_json(data)
+    except InvalidQueryException as err:
+        return HttpResponseBadRequest(f'<h1>400 BAD REQUEST</h1>{err}')
+
+    runs_json = [run.data for run in list(Run.objects.all())]
+    return JsonResponse(query_to_run['attribute']().get(runs=runs_json, run_filters=query_to_run['run_filters'],
+                                                        floor_filters=query_to_run['floor_filters']))
 
 
 @api_view(['GET', 'POST'])
@@ -30,7 +49,8 @@ def runs(request, player_id):
         player_runs = list(Run.objects.filter(player_id=player_id).values('data'))
         return JsonResponse({'runs': player_runs})
     if request.method == 'POST':
-        run = Run.objects.create(player_id=player_id, upload_date=datetime.datetime.now(), data=json.loads(request.body))
+        run = Run.objects.create(player_id=player_id, upload_date=datetime.datetime.now(),
+                                 data=json.loads(request.body))
         run.save()
         return HttpResponse(status=200)
 
